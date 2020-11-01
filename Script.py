@@ -75,6 +75,40 @@ def instagram_post():
     os.remove(photo_path)
 
 def fb_post():
+	global title
+    global topPostLink
+    global fbID
+    global fbPswd
+    #message to be printed
+    message = title + "\nCheck it out at " + topPostLink
+
+    # Creating the WebDriver object using the ChromeDriver
+    driver = webdriver.Chrome()
+
+    # Directing the driver to the defined url
+    driver.get('http://www.facebook.com/')
+
+    #email
+    email = driver.find_element_by_name("email")
+    email.send_keys(fbID)
+
+    #password
+    password = driver.find_element_by_name("pass")
+    password.send_keys(fbPswd)
+
+    password.submit()
+
+    for site in fbPages:
+        driver.get(site)
+        time.sleep(3)
+        webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
+        post_box=driver.find_element_by_xpath("//*[@name='xhpc_message_text']")
+        post_box.send_keys(message + " ")
+        time.sleep(5)
+        driver.find_element_by_xpath("//button[contains(.,'Post')]").click()
+        time.sleep(5)
+
+    driver.quit()
 
 
 #getting the top link    
